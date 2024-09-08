@@ -1,0 +1,72 @@
+body {
+  background-color: #333;
+  color: ivory;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  padding: 0 12px;
+}
+
+h1, h2, h3 {
+  text-align: center;
+  text-transform: uppercase;
+}
+h2 {
+  margin-bottom: 48px;
+}
+h3 {
+  margin: 48px 0 96px;
+}
+a {
+  color: cornflowerblue;
+}
+a:visited {
+  color: mediumpurple;
+}
+form {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 48px;
+}
+.results {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(600px,1fr));
+  column-gap: 24px;
+}
+.results hr {
+  margin-bottom: 48px;
+}
+section .scores {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(180px,1fr));
+  align-items: flex-start;
+  row-gap: 48px;
+}
+section .scores .score-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+section .scores .score-group p {
+  margin: 0 0 12px;
+}
+section .scores .score {
+  display: inline-block;
+  border-radius: 12px;
+  padding: 4px 8px;
+  font-size: 1.5rem;
+}
+section > p {
+  text-align: center;
+}
+section .overall-score {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+@media screen and (max-width: 600px) {
+  .results {
+    display: block;
+  }
+}
