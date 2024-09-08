@@ -1,5 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const path = require('path');
 const { getCityInfo, getJobs } = require('./util');
 
 dotenv.config();
@@ -7,7 +8,9 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(express.static('public'));
+
+app.use(express.static(path.join(__dirname, 'public')));
+
 
 app.get('/api/city/:city', async (req, res) => {
   const city = req.params.city;
@@ -23,6 +26,7 @@ app.get('/api/city/:city', async (req, res) => {
     res.status(500).json({ error: 'Server error.' });
   }
 });
+
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
