@@ -1,15 +1,14 @@
 const express = require('express');
-const path = require('path');
 const dotenv = require('dotenv');
-const { getCityInfo, getJobs } = require('./util');
+const { getCityInfo, getJobs } = require('./util'); 
 
-dotenv.config();
+dotenv.config(); 
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('public'));
 
 
 app.get('/api/city/:city', async (req, res) => {
@@ -18,11 +17,12 @@ app.get('/api/city/:city', async (req, res) => {
         const cityInfo = await getCityInfo(city);
         const jobs = await getJobs(city);
         res.json({ cityInfo, jobs });
-    } catch (err) {
-        res.status(500).json({ error: 'Internal Server Error' });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch city or job data' });
     }
 });
 
+
 app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+    console.log(`Server is running on http://localhost:${port}`);
 });
