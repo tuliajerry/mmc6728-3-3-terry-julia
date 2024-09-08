@@ -7,7 +7,7 @@
     "start": "node index.js",
     "test": "mocha tests.js",
     "test:watch": "mocha tests.js --watch",
-    "dev": "nodemon index.js"
+    "dev": "nodemon app.js"
   },
   "keywords": [],
   "author": "",
