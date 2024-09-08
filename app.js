@@ -1,9 +1,11 @@
 require('dotenv').config();
 const express = require('express');
-const app = express();
+const path = require('path');
 const { getCityInfo, getJobs } = require('./util');
 
-app.use(express.static('public'));
+const app = express();
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/api/city/:city', async (req, res) => {
     const cityName = req.params.city;
