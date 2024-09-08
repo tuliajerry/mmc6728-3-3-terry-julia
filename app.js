@@ -1,32 +1,32 @@
-require('dotenv').config();
 const express = require('express');
-const path = require('path');
-const { getCityInfo, getJobs } = require('./util');
-
+const { getJobs, getCityInfo } = require('./utils');
 const app = express();
+const port = process.env.PORT || 3000;
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('public'));
+app.use(express.json());
 
 app.get('/api/city/:city', async (req, res) => {
-    const cityName = req.params.city;
+  const location = req.params.city;
+  try {
+    const [jobs, cityInfo] = await Promise.all([
+      getJobs(location),
+      getCityInfo(location),
+    ]);
 
-    try {
-        const cityInfo = await getCityInfo(cityName);
-        const jobs = await getJobs(cityName);
-
-        if (!cityInfo && !jobs) {
-            return res.status(404).json({ error: 'City information and jobs not found' });
-        }
-
-        res.json({
-            cityInfo: cityInfo || false,
-            jobs: jobs || false
-        });
-    } catch (error) {
-        console.error('Error fetching data:', error);
-        res.status(500).json({ error: 'Failed to fetch data' });
+    if (jobs === false && cityInfo === false) {
+      return res.status(404).json({ error: 'Location not found' });
     }
+
+    res.status(200).json({ jobs, cityInfo });
+  } catch (error) {
+    console.error('Error processing request:', error.message);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 });
 
-module.exports = app;
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
+
 
