@@ -8,6 +8,7 @@ app.use(express.static('public'));
 
 app.get('/api/city/:city', async (req, res) => {
   const city = req.params.city;
+
   try {
     const [cityInfo, jobs] = await Promise.all([
       getCityInfo(city),
