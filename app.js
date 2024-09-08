@@ -1,27 +1,24 @@
 require('dotenv').config();
 const express = require('express');
+const path = require('path');
 const { getCityInfo, getJobs } = require('./util');
 
 const app = express();
 
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/api/city/:city', async (req, res) => {
-  const city = req.params.city;
-
   try {
-    const [cityInfo, jobs] = await Promise.all([
-      getCityInfo(city),
-      getJobs(city)
-    ]);
+    const cityInfo = await getCityInfo(req.params.city);
+    const jobs = await getJobs(req.params.city);
 
-    if (!cityInfo && !jobs) {
-      return res.status(404).json({ error: 'City info or jobs not found' });
+    if (cityInfo || jobs) {
+      res.json({ cityInfo, jobs });
+    } else {
+      res.status(404).json({ message: 'No data found' });
     }
-
-    res.json({ cityInfo, jobs });
-  } catch (err) {
-    res.status(500).json({ error: 'An error occurred while processing your request' });
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
 
