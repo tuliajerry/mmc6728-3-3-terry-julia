@@ -1,29 +1,28 @@
-require('dotenv').config();
 const express = require('express');
+const path = require('path');
+const dotenv = require('dotenv');
 const { getCityInfo, getJobs } = require('./util');
 
-const app = express();
+dotenv.config();
 
-app.use(express.static('public'));
+const app = express();
+const port = process.env.PORT || 3000;
+
+
+app.use(express.static(path.join(__dirname, 'public')));
+
 
 app.get('/api/city/:city', async (req, res) => {
-  try {
     const city = req.params.city;
-    const cityInfo = await getCityInfo(city);
-    const jobs = await getJobs(city);
-
-    if (cityInfo || jobs) {
-      res.json({ cityInfo, jobs });
-    } else {
-      res.status(404).json({ error: 'Data not found' });
+    try {
+        const cityInfo = await getCityInfo(city);
+        const jobs = await getJobs(city);
+        res.json({ cityInfo, jobs });
+    } catch (err) {
+        res.status(500).json({ error: 'Internal Server Error' });
     }
-  } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
 });
 
-const port = process.env.PORT || 3000;
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+    console.log(`Server is running on port ${port}`);
 });
-
