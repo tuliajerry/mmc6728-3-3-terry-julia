@@ -5,6 +5,7 @@ const { getCityInfo, getJobs } = require('./util');
 
 const app = express();
 
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/api/city/:city', async (req, res) => {
